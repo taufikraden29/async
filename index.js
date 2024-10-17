@@ -16,36 +16,53 @@ function getUser(token) {
   console.log("Processing apikey now ....");
   return new Promise((success, failed) => {
     if (!token) failed("No token inputed");
-    if (token)
-      setTimeout(() => {
-        success({
-          apiKey: "sdaus67gaO",
-        });
-      }, 500);
+
+    setTimeout(() => {
+      success({
+        apiKey: "sdaus67gaO",
+      });
+    }, 500);
   });
 }
 
 function getPictures(apiKey) {
   console.log("Processing Pictures now ....");
-  if (apiKey)
+  return new Promise((success, failed) => {
+    if (!apiKey) failed("Data tidak dikenali");
     setTimeout(() => {
-      return { pic: pictures };
+      success({ pic: pictures });
     }, 1500);
+  });
 }
 
-const user = login("raden_taufik");
-user
-  .then(function (response) {
-    const { token } = response;
-    getUser(token)
-      .then(function (response) {
-        const { apiKey } = response;
-        console.log(apiKey);
-      })
-      .catch((err) => console.log(err));
-  })
-  .catch((err) => console.log(err));
+async function userDisplay() {
+  try {
+    const { token } = await login("raden_taufik");
+    const { apiKey } = await getUser(token);
+    const { pic } = await getPictures(apiKey);
+    console.log(token, apiKey, pic);
+  } catch (err) {
+    console.log(err);
+  }
+}
 
+userDisplay();
+
+// Promise
+// const user = login("raden_taufik");
+// user
+//   .then(function (response) {
+//     const { token } = response;
+//     getUser(token)
+//       .then(function (response) {
+//         const { apiKey } = response;
+//         console.log(apiKey);
+//       })
+//       .catch((err) => console.log(err));
+//   })
+//   .catch((err) => console.log(err));
+
+// by Fuctions
 // login("raden_taufik", function (response) {
 //   const { token } = response;
 //   getUser(token, function (response) {
